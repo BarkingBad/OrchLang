@@ -189,11 +189,12 @@ def p_start(p):
         else:
             evaluate_blocks(block.blocks, locals)
         
-    print(repr(p[1]))
+    # print(repr(p[1]))
     # OPTYMALIZACJE
     evaluate_block(p[1], {}) 
     
     p[0] = ast.P_start(p[1])
+    return p[0]
 
 
 def p_block(p):
@@ -382,7 +383,7 @@ def p_statement_expr(p):
     def evaluate(expr, local):
         if repr(expr) in expressions:
             result = expressions[repr(expr)]
-            return lambda local: result
+            return expr.fun 
         else:
             expressions[repr(expr)] = expr.fun(local)
             return expr.fun 
@@ -453,7 +454,7 @@ def subOpt(a, b):
 
 
 def mulOpt(a, b):
-    (a, b) = (a, b) if a > b else (b, a)
+    (a, b) = (a, b) if a is int and b is int and a > b else (b, a)
     return a if b == 1 else a * b
 
 
