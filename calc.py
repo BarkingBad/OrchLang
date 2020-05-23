@@ -555,11 +555,15 @@ import ply.yacc as yacc
 parser = yacc.yacc()
 
 
-while True:
-    try:
-        s = input('calc > ')
-    except EOFError:
-        break
-    if not s:
-        continue
-    yacc.parse(s)
+def parse(input_str):
+    return yacc.parse(input_str), used_names, expressions
+
+
+# while True:
+#    try:
+#        s = input('calc > ')
+#    except EOFError:
+#        break
+#    if not s:
+#        continue
+#    yacc.parse(s)
