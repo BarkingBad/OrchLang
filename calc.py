@@ -163,7 +163,13 @@ precedence = (
     ('left', '*', '/'),
     ('right', 'UMINUS'),
 )
-
+precedence = (
+    ('left', '+', '-'),
+    ('left', '*', '/'),
+    ('left', 'sin', 'cos', 'log', 'exp', 'sqrt', 'intToFloat', 'floatToInt', 'print'),
+    ('right', 'power'),
+    ('right', 'UMINUS'),
+)
 # dictionary of names
 functions = {}
 expressions = {}
