@@ -253,8 +253,10 @@ class test_2_2(unittest.TestCase):
 
 
     def test_5_1_if(self):
-        assertThose(self, "begin if(True) print(3); end", "3\n")
-        assertThose(self, "begin if(True)print(3); end", "3\n")
+        assertThose(self, "begin if(True) print(3) else print(4); end", "3\n")
+        assertThose(self, "begin if(1 == 1) print(3) else print(4); end", "3\n")
+        assertThose(self, "begin if(1 == 2) print(3) else print(4); end", "4\n")
+        assertThose(self, "begin if(False) print(3) else print(4); end", "4\n")
 
 
     def test_5_2_while(self):
@@ -587,6 +589,9 @@ class test_2_5(unittest.TestCase):
     def test_1_2_inner_functions(self):
         assertThose(self, "begin define sum(int a, int b) = a + b; define add(int a, int b) = sum(a, b) + b; print(add(2, 3)); end", "8\n")
 
+
+    def test_1_3_fibonacci(self):
+        assertThose(self, "begin define fib(int n) = if (n < 2) n else fib(n - 1) + fib(n - 2); print(fib(10)); end", "55\n")
 
     def test_2_1_omit_declarations(self):
         with captured_output() as (out, err):

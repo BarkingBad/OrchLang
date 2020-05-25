@@ -128,16 +128,17 @@ class P_while_statement:
 
 
 class P_if_statement:
-    def __init__(self, fun, expression, statement):
+    def __init__(self, fun, expression, statement, statement2):
         self.fun = fun
         self.expression = expression
         self.statement = statement
+        self.statement2 = statement2
 
     def __str__(self):
         return "P_if_statement(" + str(self.expression) + "," + str(self.statement) + ")"
 
     def __repr__(self):
-        return '{"P_if_statement" :[' + printNode(self.expression) + "," + printNode(self.statement) + ']}'
+        return '{"P_if_statement" :[' + printNode(self.expression) + "," + printNode(self.statement) + "," + printNode(self.statement) + ']}'
 
 
 class P_for_statement:

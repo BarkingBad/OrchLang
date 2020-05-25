@@ -8,6 +8,7 @@ sys.path.insert(0, "../..")
 
 reserved = {
     'if': 'IF',
+    'else': 'ELSE',
     'while': 'WHILE',
     'for': 'FOR',
     'define': 'DEFINE',
@@ -109,6 +110,11 @@ def t_END(t):
 
 def t_IF(t):
     r'if'
+    return t
+
+
+def t_ELSE(t):
+    r'else'
     return t
 
 
@@ -251,12 +257,14 @@ def p_for_statement(p):
 
 
 def p_if_statement(p):
-    "if_statement : IF '(' expression ')' statement"
+    "if_statement : IF '(' expression ')' statement ELSE statement"
     resPr = p[3]
     res = resPr.fun
     statementPr = p[5]
     statement = statementPr.fun
-    p[0] = ast.P_if_statement(lambda local: statement(local) if res(local) else ast.P_empty().fun(local), resPr, statementPr)
+    statement2Pr = p[7]
+    statement2 = statement2Pr.fun
+    p[0] = ast.P_if_statement(lambda local: statement(local) if res(local) == ('boolean', True) else statement2(local), resPr, statementPr, statement2Pr)
 
 
 def p_while_statement(p):
@@ -275,7 +283,8 @@ def p_while_statement(p):
 
 
 def p_define(p):
-    """define : DEFINE NAME '(' params ')' '=' statement"""
+    """define : DEFINE NAME '(' params ')' '=' statement
+              | DEFINE NAME '(' params ')' '=' if_statement"""
     fun_name = p[2]
     params = p[4]
     statementPr = p[7]
@@ -306,7 +315,11 @@ def p_statement_assign(p):
     """statement : INT NAME "=" statement
                  | FLOAT NAME "=" statement
                  | BOOLEAN NAME "=" statement
-                 | STRING NAME "=" statement """
+                 | STRING NAME "=" statement
+                 | INT NAME "=" if_statement
+                 | FLOAT NAME "=" if_statement
+                 | BOOLEAN NAME "=" if_statement
+                 | STRING NAME "=" if_statement """
     typ = p[1]
     name = p[2]
     exprPr = p[4]
@@ -363,9 +376,13 @@ def p_params(p):
 
 def p_call_function(p):
     """expression : NAME '(' statements ')' """
-    func = functions[p[1]]
+    
+    def funForName(name):
+        return functions[name]
+    
+    name = p[1]
     params = p[3]
-    p[0] = ast.P_call_function(lambda local: func(params, local), p[1], params)
+    p[0] = ast.P_call_function(lambda local: funForName(name)(params, local), p[1], params)
 
 
 def p_statements(p):
