@@ -159,11 +159,6 @@ lexer = lex.lex()
 # Parsing rules
 
 precedence = (
-    ('left', '+', '-', 'sin', 'cos', 'log', 'exp', 'sqrt', 'intToFloat', 'floatToInt', 'print'),
-    ('left', '*', '/'),
-    ('right', 'UMINUS'),
-)
-precedence = (
     ('left', '+', '-'),
     ('left', '*', '/'),
     ('left', 'sin', 'cos', 'log', 'exp', 'sqrt', 'intToFloat', 'floatToInt', 'print'),
