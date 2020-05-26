@@ -551,8 +551,8 @@ class test_2_4(unittest.TestCase):
         assertThose(self, "begin int i = 0; begin int i = 1; print(i); end end", "1\n")
 
 
-    # def test_3_2_block(self):
-    #     assertThose(self, "begin int i = 0; begin int i = 1; print(i); end print(i); end", "1\n0\n")
+    def test_3_2_block(self):
+        assertThose(self, "begin int i = 0; begin int i = 1; print(i); end print(i); end", "1\n0\n")
 
 
     def test_4_1_define(self):

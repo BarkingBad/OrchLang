@@ -183,21 +183,17 @@ def p_start(p):
     """start : block"""
 
     def evaluate_blocks(blocks, locals):
-
         evaluate_block(blocks.block, locals)
         if blocks.has_blocks():
             evaluate_blocks(blocks.blocks, locals)
 
     def evaluate_block(block, locals):
         if block.has_casual_statement():
-            # print(block.casual_statement.operation.fun(locals))
-            # print(repr(block.casual_statement.operation))
             block.casual_statement.operation.fun(locals)
         else:
-            evaluate_blocks(block.blocks, locals)
+            new_locals = dict.copy(locals)
+            evaluate_blocks(block.blocks, new_locals)
         
-    # print(repr(p[1]))
-    # OPTYMALIZACJE
     evaluate_block(p[1], {}) 
     
     p[0] = ast.P_start(p[1])
